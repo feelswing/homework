@@ -1,2 +1,29 @@
-‹h1›ITVDN‹⁄h1›
-‹p›hello‹⁄p›
+# Импортируем необходимые библиотеки
+import speech_recognition as sr
+import pyttsx3
+
+# Инициализируем голосовой интерфейс
+engine = pyttsx3.init()
+engine.setProperty('voice', 'ru')
+
+# Создаем экземпляр распознавателя
+recognizer = sr.Recognizer()
+
+# Запускаем бесконечный цикл
+while True:
+    # Просим пользователя произнести фразу
+    engine.say('Произнесите фразу')
+    engine.runAndWait()
+
+    # Получаем аудио с микрофона
+    with sr.Microphone() as source:
+        audio = recognizer.listen(source)
+
+    # Пытаемся распознать речь
+    try:
+        text = recognizer.recognize_google(audio, language="ru-RU")
+        print('Вы сказали: ' + text)
+    except sr.UnknownValueError:
+        print('Робот не расслышал фразу')
+    except sr.RequestError as e:
+        print('Ошибка сервиса: ' + e)
